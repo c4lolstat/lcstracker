@@ -1,0 +1,59 @@
+<!--<!DOCTYPE html>-->
+<html xmlns="http://www.w3.org/1999/html">
+	<head lang="en">
+		
+		<meta charset="UTF-8">
+		<title>LCS Twitter Tracker</title>
+		
+		<script type="text/javascript" src="resources/Chart.js"></script>
+		<script type="text/javascript" src="resources/jquery.js"></script>
+		<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+		
+		<link rel="stylesheet" href="css/reset.css"></link>
+		
+	</head>
+	<body>
+		<div id="container" style="width: 50%">
+			<canvas id="canvas" height="450" width="600"></canvas>
+		</div>
+		<script>
+			$(document).ready(function(){
+				
+				var socket = io.connect('http://localhost:1708');
+				var update={};
+				var labels=[];
+				var dataset=[];
+				var ctx = document.getElementById("canvas").getContext("2d");
+				
+				socket.on('update',function(data){
+					update = $.parseJSON(data);
+					labels = Object.getOwnPropertyNames(update);
+					dataset = function(){
+						tmp=[];
+						labels.forEach(function(element){
+							tmp.push(update[element]);
+						});
+						return tmp;
+					}();
+					var barChartData = {
+						labels:labels,
+						datasets:[{
+						fillColor : "rgba(151,187,205,0.5)",
+						strokeColor : "rgba(151,187,205,0.8)",
+						highlightFill : "rgba(151,187,205,0.75)",
+						highlightStroke : "rgba(151,187,205,1)",
+						data :dataset
+						}]
+					};
+					new Chart(ctx).Bar(barChartData, {
+					responsive : true
+					});
+				});
+
+
+
+			});
+
+	</script>
+	</body>
+</html>

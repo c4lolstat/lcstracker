@@ -1,0 +1,14 @@
+# Ignore everything
+*
+node_modules/
+node_modules/**/*
+
+# But not these files...
+!.gitignore
+!web/
+!web/**/*
+!app.js
+!package.json
+!bower.json
+!gulpfile.js
+
